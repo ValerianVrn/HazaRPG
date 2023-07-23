@@ -1,0 +1,44 @@
+﻿@page
+@model HazaRPG.Pages.CharactersModel
+
+<h1>Battle Page</h1>
+
+<div id="charactersContainer"></div>
+
+<script>
+    fetch('https://localhost:7117/Character/characters') // Replace '/api/characters' with your API endpoint
+        .then(response => response.json())
+        .then(data => {
+            displayCharacters(data);
+        })
+        .catch(error => console.error('Error fetching characters:', error));
+
+    function displayCharacters(characters) {
+        const container = document.getElementById('charactersContainer');
+
+        characters.forEach(character => {
+            const characterDiv = document.createElement('div');
+            characterDiv.innerHTML = `
+                <h2>${character.name}</h2>
+                <p>Health: ${character.health}</p>
+                <p>Stamina: ${character.stamina}</p>
+                <p>Attack: ${character.attack}</p>
+                <p>Defense: ${character.defense}</p>
+                <!-- Add more properties you want to display -->
+
+                <h3>Attack Equipment</h3>
+                <p>Name: ${character.attackEquipment.name}</p>
+                <!-- Display other attack equipment properties -->
+
+                <h3>Defense Equipment</h3>
+                <p>Name: ${character.defenseEquipment.name}</p>
+                <!-- Display other defense equipment properties -->
+
+                <!-- Add more equipment sections as needed -->
+
+                <hr>
+            `;
+            container.appendChild(characterDiv);
+        });
+    }
+</script>
