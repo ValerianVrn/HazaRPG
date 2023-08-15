@@ -1,3 +1,10 @@
+using HazaRPG.Api.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Data.Common;
+using HazaRPG.Api.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +22,10 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
+builder.Services.AddDbContexts(builder.Configuration);
+builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,3 +43,23 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+internal static class Extensions
+{
+    public static IServiceCollection AddDbContexts(this IServiceCollection services, IConfiguration configuration)
+    {
+        static void ConfigureSqlOptions(SqlServerDbContextOptionsBuilder sqlOptions)
+        {
+            sqlOptions.MigrationsAssembly(typeof(Program).Assembly.FullName);
+            
+            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+        };
+
+        services.AddDbContext<ApplicationContext>(options =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("SqlServerConnectionString"), ConfigureSqlOptions);
+        });
+
+        return services;
+    }
+}

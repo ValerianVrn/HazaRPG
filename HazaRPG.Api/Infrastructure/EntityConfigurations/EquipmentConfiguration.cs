@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HazaRPG.Api.Infrastructure.EntityConfigurations
 {
-    public class CharacterEntityTypeConfiguration : IEntityTypeConfiguration<Equipment>
+    public class EquipmentConfiguration : IEntityTypeConfiguration<Equipment>
     {
         public void Configure(EntityTypeBuilder<Equipment> builder)
         {
@@ -19,8 +19,7 @@ namespace HazaRPG.Api.Infrastructure.EntityConfigurations
             // Relationships
             builder.HasMany(e => e.EquipmentActions)
                 .WithOne()
-                .HasForeignKey(ea => ea.Id);
+                .HasForeignKey("EquipmentId");
         }
-
     }
 }

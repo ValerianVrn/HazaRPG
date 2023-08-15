@@ -25,15 +25,18 @@ namespace HazaRPG.Api.Infrastructure.EntityConfigurations
             // Relationships
             builder.HasOne(c => c.AttackEquipment)
                 .WithOne()
-                .HasForeignKey<Character>(c => c.AttackEquipmentId);
+                .HasForeignKey<Character>(c => c.AttackEquipmentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(c => c.DefenseEquipment)
                 .WithOne()
-                .HasForeignKey<Character>(c => c.DefenseEquipmentId);
+                .HasForeignKey<Character>(c => c.DefenseEquipmentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(c => c.ArtifactEquipment)
                 .WithOne()
-                .HasForeignKey<Character>(c => c.ArtifactEquipmentId);
+                .HasForeignKey<Character>(c => c.ArtifactEquipmentId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

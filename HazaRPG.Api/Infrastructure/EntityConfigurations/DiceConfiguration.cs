@@ -1,6 +1,9 @@
-﻿using HazaRPG.Api.Models;
+﻿using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using HazaRPG.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 
 namespace HazaRPG.Api.Infrastructure.EntityConfigurations
 {
@@ -15,14 +18,11 @@ namespace HazaRPG.Api.Infrastructure.EntityConfigurations
 
             // Properties
             builder.Property(d => d.DiceType).HasColumnName("DiceType");
-            builder.Property(d => d.IntFaces).HasColumnName("IntFaces");
-            builder.Property(d => d.BoolFaces).HasColumnName("BoolFaces");
+            builder.Property(d => d.Faces).HasColumnName("Faces").HasConversion(
+                v => JsonConvert.SerializeObject(v),
+                v => JsonConvert.DeserializeObject<object[]>(v));
 
-            // Relationships
-            builder.HasMany(e => e.EquipmentActions)
-                .WithOne()
-                .HasForeignKey(ea => ea.Id);
+            //builder.Property(d => d.BoolFaces).HasColumnName("BoolFaces");
         }
-
     }
 }

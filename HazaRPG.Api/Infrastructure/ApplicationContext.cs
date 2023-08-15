@@ -12,7 +12,7 @@ namespace HazaRPG.Api.Infrastructure
 
         public DbSet<Equipment> Equipments { get; set; }
 
-        public DbSet<AttackEquipment> AttackEquipments { get; set; }
+        public DbSet<EquipmentAction> EquipmentActions { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
@@ -27,6 +27,7 @@ namespace HazaRPG.Api.Infrastructure
             modelBuilder.ApplyConfiguration(new ArtifactEquipmentConfiguration());
             modelBuilder.ApplyConfiguration(new AttackEquipmentConfiguration());
             modelBuilder.ApplyConfiguration(new DefenseEquipmentConfiguration());
+            modelBuilder.ApplyConfiguration(new EquipmentActionConfiguration());
         }
     }
 }
